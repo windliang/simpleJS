@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>`
+<script>
+// ECMAScript v3 规定，replace() 方法的参数 replacement 可以是函数而不是字符串。在这种情况下，每个匹配都调用该函数，它返回的字符串将作为替换文本使用。该函数的第一个参数是匹配模式的字符串。接下来的参数是与模式中的子表达式匹配的字符串，可以有 0 个或多个这样的参数。接下来的参数是一个整数，声明了匹配在 stringObject 中出现的位置。最后一个参数是 stringObject 本身。
+// var obj = {},arr = "甲乙丙丁戊己庚辛壬癸".replace(/(.)/g,function(a,b,c){
+//     obj[b] = c;
+// });
+let sortArr = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+console.log(sortArr);
+function getIndex(key){
+    return sortArr.indexOf(key) != -1 ? sortArr.indexOf(key) : 10000;
+}
+var _arr = ['其他','乙','丁','戊','己','辛','癸','壬','甲','丙','庚'].sort(function(a,b){
+    return getIndex(a) > getIndex(b) ? 1 : -1;
+});
+console.log(_arr);
+</script>
+</html>
