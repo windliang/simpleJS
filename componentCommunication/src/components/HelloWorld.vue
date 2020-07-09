@@ -16,14 +16,11 @@ export default {
     }
   },
   created () {
-    console.log(this)
     this.setList()
   },
   methods: {
     setList() {
-      console.log(this.$router)
       this.list = this.$router.options.routes
-      console.log(this.list)
     }
   }
 }
