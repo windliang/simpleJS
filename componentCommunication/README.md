@@ -1,4 +1,4 @@
-# p2c
+# componentCommun
 
 > A Vue.js project
 
