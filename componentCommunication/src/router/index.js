@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import porpParent from '@/components/porps&$emit/parent'
 import refParent from '@/components/ref&refs/parent'
 import eventBusParent from '@/components/eventBus/parent'
+import vuexParent from '@/components/vuex/parent'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/eventBusParent',
       name: 'eventBusParent',
       component: eventBusParent
+    },
+    {
+      path: '/vuexParent',
+      name: 'vuexParent',
+      component: vuexParent
     }
   ]
 })
