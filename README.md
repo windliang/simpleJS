@@ -1,1 +1,1 @@
-# simpleJavaScript
+# simpleJS
