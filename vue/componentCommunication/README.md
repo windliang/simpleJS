@@ -46,7 +46,7 @@ export default {
 <template>
   <div class="section">
     <child :list="list"  @onEmitIndex="onEmitIndex"></child>
-    <p>{{currentIndex}}</p>
+    <p>{{item}} => {{currentIndex}}</p>
   </div>
 </template>
 <script>
@@ -56,12 +56,14 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      item: '',
       list: ['a1', 'b2', 'c3']
     }
   },
   methods: {
-    onEmitIndex(idx) {
-      this.currentIndex = idx
+    onEmitIndex(arg) {
+      this.currentIndex = arg.index;
+      this.item = arg.item;
     }
   }
 }
@@ -71,15 +73,15 @@ export default {
 ```
 <template>
   <div>
-    <span v-for="(item, index) in list" :key="index" @click="emitIndex(index)">{{item}}</span>
+    <button v-for="(item, index) in list" :key="index" @click="emitIndex(index, item)">{{item}}</button>
   </div>
 </template>
 <script>
 export default {
   props: ['list'],
   methods: {
-    emitIndex(index) {
-      this.$emit('onEmitIndex', index)
+    emitIndex(index, item) {
+      this.$emit('onEmitIndex', {index, item})
     }
   }
 }
@@ -92,34 +94,53 @@ export default {
 父组件 parent.vue：
 ```
 <template>
-  <child ref="childForRef"></child>
+  <div>
+    <button @click="sayHello">sayHello</button>
+    <child ref="childForRef"></child>
+  </div>
 </template>
 <script>
 import child from './child.vue'
   export default {
     components: { child },
+    data () {
+      return {
+        childForRef: null,
+      }
+    },
     mounted() {
-      const childForRef = this.$refs.childForRef;
-      console.log(childForRef.name);
-      childForRef.sayHello();
+      this.childForRef = this.$refs.childForRef;
+      console.log(this.childForRef.name);
+      // this.childForRef.sayHello();
+    },
+    methods: {
+      sayHello() {
+        this.childForRef.sayHello()
+      }
     }
   }
 </script>
 ```
 子组件 child.vue：
 ```
+<template>
+  <div>child 的内容</div>
+</template>
+<script>
 export default {
   data () {
     return {
-      name: 'Vue.js'
+      name: '我是 child',
     }
   },
   methods: {
     sayHello () {
-      console.log('hello')
+      console.log('hello');
+      alert('hello');
     }
   }
 }
+</script>
 ```
 ### 三、eventBus
 `eventBus` 又称为事件总线，在 vue 中可以使用它来作为沟通桥梁的概念, 就像是所有组件共用相同的事件中心，可以向该中心注册发送事件或接收事件， 所以组件都可以通知其他组件。一般用来兄弟组件和隔代组件传值。
@@ -129,7 +150,7 @@ bus.js:
 import Vue from 'vue'
 export const bus = new Vue()
 ```
-2. 发送事件，假设有 child1、child2 两个兄弟组件，在 `child1.vue` 中发送事件。
+2. 发送事件，假设有 child1、child2 两个兄弟组件，在 `child1.vue` 中使用`bus.$emit()`发送事件。
 parent.vue:
 ```
 <template>
@@ -155,7 +176,7 @@ child1.vue:
 </template>
 <script>
 import {bus} from '@/bus.js'
-console.log(bus)
+// console.log(bus)
 export default {
   data(){
     return{
@@ -172,21 +193,23 @@ export default {
 }
 </script>
 ```
-3. 在 `child2.vue` 中接收事件。
+3. 在 `child2.vue` 中使用`bus.$on()`接收事件。
 ```
 <template>
-  <div>计算和: {{count}}</div>
+  <div>计算和: <br>child1Num => {{child1Num}}<br>count + child1Num => {{count}}</div>
 </template>
 <script>
 import { bus } from '@/bus.js'
 export default {
   data() {
     return {
-      count: 0
+      child1Num: 0,
+      count: 0,
     }
   },
   mounted() {
     bus.$on('addition', arg=> {
+      this.child1Num = arg.num;
       this.count = this.count + arg.num;
     })
   }
@@ -196,7 +219,7 @@ export default {
 4.如果想移除事件的监听, 可以像下面这样操作：
 ```
  import { bus } from './bus.js'
-Bus.$off('addition', {})
+bus.$off('addition', {})
 ```
 ### 四、Vuex
 父组件：
@@ -347,61 +370,64 @@ export default {
       name: "zhang",
       age: "18",
       gender: "女",
-      height: "168"
+      height: "158"
     };
   }
 };
 </script>
 ```
 
- // childCom1.vue
- ```
- <template class="border">
-   <div>
-     <p>name: {{ name}}</p>
-     <p>childCom1的$attrs: {{ $attrs }}</p>
-     <child-com2 v-bind="$attrs"></child-com2>
-   </div>
- </template>
- <script>
- const childCom2 = () => import("./childCom2.vue");
- export default {
-   components: {
-     childCom2
-   },
-   inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
-   props: {
-     name: String // name作为props属性绑定
-   },
-   created() {
-     console.log(this.$attrs);
-      // { "age": "18", "gender": "女", "height": "158", "title": "程序员成长指北" }
-   }
- };
- </script>
-```
-
- // childCom2.vue
+ childA.vue
  ```
  <template>
-   <div class="border">
-     <p>age: {{ age}}</p>
-     <p>childCom2: {{ $attrs }}</p>
-   </div>
- </template>
- <script>
- 
- export default {
-   inheritAttrs: false,
-   props: {
-     age: String
-   },
-   created() {
-     console.log(this.$attrs); 
-     // { "gender": "女", "height": "158", "title": "程序员成长指北" }
-   }
- };
- </script>
+  <div>
+    <p>props 接收到的 name: {{ name}}</p>
+    <p>childA 的 $attrs: {{$attrs}}</p>
+    <child-b v-bind="$attrs"></child-b>
+  </div>
+</template>
+<script>
+const childB = () => import("./childB.vue");
+export default {
+  components: {
+    childB
+  },
+  inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性
+  props: {
+    name: String // name作为props属性绑定
+  },
+  created() {
+    console.log(this.$attrs);
+     // { "age": "18", "gender": "女", "height": "158", "title": "嘿嘿嘿" }
+  }
+};
+</script>
+```
+
+ childB.vue
+ ```
+ <template>
+  <div class="border">
+    <p>props 接收到的 age: {{age}}</p>
+    <p>childB 的 $attrs: {{$attrs}}</p>
+  </div>
+</template>
+<script>
+
+export default {
+  inheritAttrs: false,
+  props: {
+    age: String
+  },
+  created() {
+    console.log(this.$attrs); 
+    // { "gender": "女", "height": "158", "title": "嘿嘿嘿" }
+  }
+};
+</script>
+<style scoped>
+  .border{border: 1px solid #000;}
+</style>
 ```
 ### 六、\$children/$parent
 parent.vue：
