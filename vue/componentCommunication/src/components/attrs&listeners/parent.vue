@@ -12,7 +12,7 @@ export default {
       name: "zhang",
       age: "18",
       gender: "女",
-      height: "168"
+      height: "158"
     };
   }
 };
