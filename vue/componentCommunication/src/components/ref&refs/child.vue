@@ -1,16 +1,17 @@
 <template>
-  <div>child</div>
+  <div>child 的内容</div>
 </template>
 <script>
 export default {
   data () {
     return {
-      name: 'Vue.js'
+      name: '我是 child',
     }
   },
   methods: {
     sayHello () {
-      console.log('hello')
+      console.log('hello');
+      alert('hello');
     }
   }
 }

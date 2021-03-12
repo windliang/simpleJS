@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <child :list="list"  @onEmitIndex="onEmitIndex"></child>
-    <p>{{currentIndex}}</p>
+    <p>{{item}} => {{currentIndex}}</p>
   </div>
 </template>
 <script>
@@ -11,12 +11,14 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      item: '',
       list: ['a1', 'b2', 'c3']
     }
   },
   methods: {
-    onEmitIndex(idx) {
-      this.currentIndex = idx
+    onEmitIndex(arg) {
+      this.currentIndex = arg.index;
+      this.item = arg.item;
     }
   }
 }

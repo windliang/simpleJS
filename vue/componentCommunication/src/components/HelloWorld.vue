@@ -2,7 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <ul>
-      <li v-for="item in list" :key="item.name"><a :href="`#/${item.name}`">{{item.name}}</a></li>
+      <li v-for="item in list" :key="item.name" v-show="item.name !== 'HelloWorld'"><a :href="`#/${item.name}`">{{item.name}}</a></li>
     </ul>
   </div>
 </template>
@@ -11,7 +11,7 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      msg: 'Hi Boy!',
       list: []
     }
   },
