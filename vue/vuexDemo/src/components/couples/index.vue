@@ -1,24 +1,33 @@
 <template>
   <div>
-    a: {{$store.state.a}}<br/>
-    <input type="button" value="+5" @click="fn()">
+    str: {{str}}<br>
+    couples: {{couples}}<br>
+    a_str: {{str_boy}}<br>
+    b_str: {{str_girl}}<br>
+    <input type="button" value="设置 boy" @click="set_boy('aaa')">
+    <input type="button" value="设置 girl" @click="set_girl('bbb')">
+    <br>
   </div>
 </template>
-  
+
 <script>
 import {mapState, mapActions, mapGetters} from 'vuex';
+
 export default {
-  data () {
-    return {
-    }
-  },
+  // created(){console.log(this.$store)},
   methods: {
-    fn(){
-      //this.$store.state.a+=5;// 直接改也可以改，但会报错
-      //this.$store.commit('add', 5);// 使用 mutations 也可以改，但是一般不会用
-      this.$store.dispatch('add', 5);
-    }
+    ...mapActions({
+      set_boy: 'boySetStr',
+      set_girl: 'girlSetStr'
+    })
+  },
+  computed: {
+    ...mapState(['str']),
+    ...mapState({
+      str_boy: state=>state.boy.str,
+      str_girl: state=>state.girl.str,
+    }),
+    ...mapGetters(['couples'])
   }
 }
 </script>
-  
