@@ -28,7 +28,10 @@ export default {
     ...mapActions(['addA', 'addB', 'setOnline', 'readUsers']),
   },
   computed: {
-    ...mapState(['a', 'b']),
+    ...mapState({
+      a: state=>state.single.a,
+      b: state=>state.single.b,
+    }),
     ...mapGetters(['count', 'onlineUsers'])
   }
 }

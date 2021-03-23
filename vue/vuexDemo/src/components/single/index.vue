@@ -1,6 +1,6 @@
 <template>
     <div>
-      a: {{$store.state.a}}<br/>
+      a: {{$store.state.single.a}}<br/>
       <input type="button" value="+5" @click="fn()">
     </div>
   </template>
