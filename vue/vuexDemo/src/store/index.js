@@ -15,14 +15,30 @@ const store=new Vuex.Store({
   mutations: {
     add(state, n){
       state.a+=n;
-    }
+    },
+    addA(state, n){
+      state.a+=n;
+    },
+    addB(state, n){
+      state.b+=n;
+    },
   },
   actions: {
     add({commit}, n){
       commit('add', n);
-    }
+    },
+    addA({commit}, n){
+      commit('addA', n);
+    },
+    addB({commit}, n){
+      commit('addB', n);
+    },
   },
-  getters: {},
+  getters: {
+    count(state){
+      return state.a+state.b;
+    },
+  },
   modules: {}
 });
 export default store
