@@ -1,6 +1,6 @@
 <template>
   <div>
-    这是 a
+    这是导航二的 a
   </div>
 </template>
 <script>
