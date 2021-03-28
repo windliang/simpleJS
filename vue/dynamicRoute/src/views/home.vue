@@ -38,6 +38,9 @@
       };
     },
     watch: {},
+    created() {
+      console.log(this.$router.options.routes)
+    },
     beforeMount() {},
     mounted() {},
     methods: {
