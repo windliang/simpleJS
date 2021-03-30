@@ -1,60 +1,12 @@
-console.log(1111)
 import router from './router'
-import store from './store'
-import { asyncRouterMap, constantRouterMap } from '@/router/index';
 
-    let arr = constantRouterMap.concat(asyncRouterMap);
-    console.log('arr',arr)
-    router.addRoutes(arr); // 动态添加可访问路由表
-// import NProgress from 'nprogress' // Progress 进度条
-// import 'nprogress/nprogress.css'// Progress 进度条样式
-// import { Message } from 'element-ui'
-// import { getToken } from '@/utils/auth' // 验权
-
-// const whiteList = ['/login'] // 不重定向白名单
-// router.beforeEach((to, from, next) => {
-//   store.dispatch('getRole', 'admin')
-//   console.log(store.state.role)
-//   if (store.state.role === 'admin') {
-//     let arr = constantRouterMap.concat(asyncRouterMap);
-//     router.addRoutes(arr); // 动态添加可访问路由表
-//     console.log(1111)
-//     // next({ ...to, replace: true })
-//   }
-//   NProgress.start()
-//   if (getToken()) {
-//     if (to.path === '/login') {
-//       next({ path: '/' })
-//       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
-//     } else {
-//       if (store.getters.roles.length === 0) {
-//         store.dispatch('GetInfo').then(res => { // 拉取用户信息
-//           let menus=res.data.menus;
-//           let username=res.data.username;
-//           store.dispatch('GenerateRoutes', { menus,username }).then(() => { // 生成可访问的路由表
-//             router.addRoutes(store.getters.addRouters); // 动态添加可访问路由表
-//             next({ ...to, replace: true })
-//           })
-//         }).catch((err) => {
-//           store.dispatch('FedLogOut').then(() => {
-//             Message.error(err || 'Verification failed, please login again')
-//             next({ path: '/' })
-//           })
-//         })
-//       } else {
-//         next()
-//       }
-//     }
-//   } else {
-//     if (whiteList.indexOf(to.path) !== -1) {
-//       next()
-//     } else {
-//       next('/login')
-//       NProgress.done()
-//     }
-//   }
-// })
-
-// router.afterEach(() => {
-//   NProgress.done() // 结束Progress
-// })
+router.beforeEach((to, from, next) => {
+    let permArr = ['navPage2A']
+    console.log('xiugvai',to, from)
+    if (permArr.indexOf(to.name) === -1) {
+        next()
+    } else {
+        // next({path: '/', replace: true}) // 跳转成功了，但会报错
+        router.push({ path: '/' }).catch(err => {})
+    }
+})

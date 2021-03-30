@@ -20,20 +20,22 @@ export const constantRouterMap = [{
     path: 'navPage1C',
     name: 'navPage1C',
     component: () => import('@/views/navPage1/c')
+  },
+  { 
+    path: 'navPage2A',
+    name: 'navPage2A',
+    component: () => import('@/views/navPage2/a')
+  },
+  { 
+    path: 'navPage2B',
+    name: 'navPage2B',
+    component: () => import('@/views/navPage2/b')
+  },
+  { 
+    path: 'navPage2C',
+    name: 'navPage2C',
+    component: () => import('@/views/navPage2/c')
   }] 
-}]
-export const asyncRouterMap = [{
-  path: '/',
-  // name: 'home',
-  component: home,
-  children: [
-    { 
-      path: '/navPage2A',
-      name: 'navPage2A',
-      component: () => import('@/views/navPage2/a'),
-      meta: { role: ['admin','super_editor'] }  //页面需要的权限
-    }
-  ]
 }]
 export default new Router({
   routes: constantRouterMap
