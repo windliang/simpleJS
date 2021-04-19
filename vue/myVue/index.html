@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{name}}</p>
+        <p>{{age}}</p>
+        <input type="text" v-model="name">
+        <p v-text="age"></p>
+        <button @click="handleClick">快点</button>
+        <p v-html="button"></p>
+    </div>
+    <script src="my-vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                name: 'vue',
+                age: 12,
+                button: '<button>点我</button>',
+            },
+            methods: {
+                handleClick(){
+                    this.name = '快点改的值'
+                    // alert('快点的alert')
+                }
+            }
+        });
+        // vm.$data.name = '改了name'
+        // vm.$data.age = '改了age'
+    </script>
+</body>
+</html>
